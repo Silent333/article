@@ -1,11 +1,14 @@
 import React from 'react';
 import Chip from 'material-ui/Chip';
-import {Card, CardHeader} from 'material-ui/Card';
+import { Card, CardHeader } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
+import UpdateArticle from './UpdateArticle'
+import {articleDelete} from './ArticleService'
+
 
 const cardHeaderStyle = {
-    cursor: 'pointer',
+    cursor: 'text',
     display: 'flex',
     justifyContent: 'space-between',
     fontWeight: 'bold',
@@ -18,6 +21,9 @@ const cardStyle = {
 }
 const deleteBtnStyle = {
     cursor: 'pointer',
+    display: 'inline-block',
+    marginRight: '10px'
+
 };
 const chipStyle = {
     display: 'inline',
@@ -31,33 +37,34 @@ const chipTextStyle = {
     fontSize: '15px',
     fontWeight: 'bold'
 }
+const btnsStyle = {
+    display: 'flex',
+    margin: '20px'
+}
 
-class Item extends React.Component {
+class Article extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            comments: this.props.comments
+            comments: this.props.comments,
+            deleted: false
         };
     }
 
-    // handleClick = () => {
-    //     this.props.handleActiveItem(this.props.id)
-    // }
-
     handleDelete = () => {
-        this.props.handleDelete(this.props.id)
+        articleDelete(this.props.id).then(this.props.refresh());
+        this.setState({
+            deleted: true
+        })
+        this.props.refresh();
+    }
+
+    handleUpdate = () => {
+        this.props.refresh()
     }
 
     render() {
-        const deleteBtn = <div>
-            <RaisedButton
-                label="Delete"
-                secondary={true}
-                style={deleteBtnStyle}
-                onClick={this.handleDelete} />
-        </div>
-
         return (
             <div>
                 <Card style={cardStyle}
@@ -67,12 +74,28 @@ class Item extends React.Component {
                         style={cardHeaderStyle}
                         title={this.props.title}
                         subtitle={this.props.text}
-                        children={deleteBtn}
                     />
+                    <div style={btnsStyle}>
+                        <UpdateArticle
+                            label="Update"
+                            title={this.props.title}
+                            text={this.props.text}
+                            id={this.props.id}
+                            refresh={this.handleUpdate}
+                            primary={true}
+                            style={deleteBtnStyle}
+                            onClick={this.handleDelete} />
+                        <RaisedButton
+                            label="Delete"
+                            secondary={true}
+                            style={deleteBtnStyle}
+                            onClick={this.handleDelete} />
+                    </div>
                     <Divider />
                 </Card>
             </div >
         );
     }
 }
-export default Item;
+
+export default Article;

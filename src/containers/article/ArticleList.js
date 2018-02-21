@@ -5,12 +5,13 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import CreateArticle from './CreateArticle'
 import {articleGet, articlePost, } from './ArticleService'
 
+
 const containerStyle = {
     width: '90%',
     margin: '0 auto',
 };
 
-class ItemList extends React.Component {
+class ArticleList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,6 +22,7 @@ class ItemList extends React.Component {
     componentWillMount () {
         this.getArticles()
     }
+
     getArticles = () => {
         articleGet().then(response => this.setState({articles: response.data.result}));
     }
@@ -34,8 +36,10 @@ class ItemList extends React.Component {
                     this.state.articles.map(article => (
                         <Article
                             key={article.sys_id.toString()}
+                            id={article.sys_id}
                             title={article.u_title}
                             text={article.u_text}
+                            refresh={this.getArticles}
                         />)
                     )
                 }
@@ -43,4 +47,4 @@ class ItemList extends React.Component {
         );
     }
 }
-export default ItemList;
+export default ArticleList;

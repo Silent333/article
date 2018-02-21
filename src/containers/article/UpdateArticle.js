@@ -1,19 +1,19 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import { articlePost } from './ArticleService'
+import {articlePut} from './ArticleService'
 import TextField from 'material-ui/TextField';
 
 
-class CreateArticle extends React.Component {
+class UpdateArticle extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             open: false,
-            title: '',
-            text: ''
+            title: this.props.title,
+            text: this.props.text
         };
     }
 
@@ -29,16 +29,14 @@ class CreateArticle extends React.Component {
         });
     }
 
-    handlePostArticle = () => {
+    handlePutArticle = () => {
         const requestBody = {
             u_title: this.state.title,
             u_text: this.state.text
         }
-        articlePost(JSON.stringify(requestBody)).then(this.props.refresh())
+        articlePut(this.props.id, JSON.stringify(requestBody)).then(this.props.refresh())
         this.setState({
             open: false,
-            title: '',
-            text: ''
         })
         this.props.refresh()
     }
@@ -62,17 +60,15 @@ class CreateArticle extends React.Component {
                 label="Submit"
                 primary={true}
                 keyboardFocused={true}
-                onClick={this.handlePostArticle}
+                onClick={this.handlePutArticle}
             />,
         ];
 
         return (
             <div>
-                <FloatingActionButton onClick={this.handleOpen}>
-                    <ContentAdd />
-                </FloatingActionButton>
+                <RaisedButton label="Update" onClick={this.handleOpen} />
                 <Dialog
-                    title="Create Article"
+                    title="Update Article"
                     actions={actions}
                     modal={false}
                     open={this.state.open}
@@ -98,4 +94,4 @@ class CreateArticle extends React.Component {
         );
     }
 }
-export default CreateArticle;
+export default UpdateArticle;
