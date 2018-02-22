@@ -31,6 +31,7 @@ class UpdateArticle extends React.Component {
 
     handlePutArticle = () => {
         const requestBody = {
+            u_receiver: 'john.smith',
             u_title: this.state.title,
             u_text: this.state.text
         }

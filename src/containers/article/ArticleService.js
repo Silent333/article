@@ -18,7 +18,7 @@ const articleGet = () => {
             'Content-Type': 'application/json',
             'Authorization': 'Basic ' + btoa('john.smith' + ':' + 'admin')}
       };
-    const url = 'https://dev10420.service-now.com/api/now/table/u_article?sysparm_limit=10';
+    const url = 'https://dev10420.service-now.com/api/now/table/u_article';
     return axios.get(url, config);
 }
 
@@ -42,7 +42,6 @@ const articleDelete = (articleId) => {
       const url = 'https://dev10420.service-now.com/api/now/table/u_article/'+ articleId
       return axios.delete(url, config)
 }
-
 
 
 export { articlePost, articleGet, articlePut, articleDelete }; 
